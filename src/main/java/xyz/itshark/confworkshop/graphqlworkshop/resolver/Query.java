@@ -65,4 +65,13 @@ public class Query implements GraphQLQueryResolver {
     	return confSessionRepository.findAll();
     }
 
+    public List<Object> allTalks() {
+    	List<Object> conf =   (List) confSessionRepository.findAll();
+    	List<Workshop> work = workshopRepository.findAll();
+    	
+    	conf.addAll(work);
+    	
+        return conf;
+    }
+
 }

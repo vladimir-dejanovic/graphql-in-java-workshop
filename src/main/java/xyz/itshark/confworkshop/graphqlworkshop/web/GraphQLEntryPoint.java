@@ -34,18 +34,18 @@ public class GraphQLEntryPoint extends SimpleGraphQLServlet {
         super(graphQLSchema);
     }
     
-    public static GraphQLEntryPoint of(SpeakerRepository speakerRepository, AttendeeRepository attendeeRepository, ConfSessionRepository confSessionRepository, WorkshopRepository workshopRepository,SpeakerConfSessionRepository speakerConfSessionRepository) {
-    	return new GraphQLEntryPoint(buildSchema(speakerRepository,attendeeRepository,confSessionRepository,workshopRepository,speakerConfSessionRepository));
+    public static GraphQLEntryPoint of(SpeakerRepository speakerRepository, AttendeeRepository attendeeRepository, ConfSessionRepository confSessionRepository, WorkshopRepository workshopRepository,SpeakerConfSessionRepository speakerConfSessionRepository, SpeakerWorkshopRepository speakerWorkshopRepository) {
+    	return new GraphQLEntryPoint(buildSchema(speakerRepository,attendeeRepository,confSessionRepository,workshopRepository,speakerConfSessionRepository,speakerWorkshopRepository));
     }
 
-    private static GraphQLSchema buildSchema(SpeakerRepository speakerRepository, AttendeeRepository attendeeRepository, ConfSessionRepository confSessionRepository, WorkshopRepository workshopRepository,SpeakerConfSessionRepository speakerConfSessionRepository) {
+    private static GraphQLSchema buildSchema(SpeakerRepository speakerRepository, AttendeeRepository attendeeRepository, ConfSessionRepository confSessionRepository, WorkshopRepository workshopRepository,SpeakerConfSessionRepository speakerConfSessionRepository, SpeakerWorkshopRepository speakerWorkshopRepository) {
         return SchemaParser
                 .newParser()
                 .file("schema.graphqls")
                 .dictionary(ConfSession.class)
                 .resolvers(
                         Query.of(speakerRepository,attendeeRepository, confSessionRepository, workshopRepository),
-                        SpeakerResolver.of(confSessionRepository, speakerConfSessionRepository)
+                        SpeakerResolver.of(confSessionRepository, workshopRepository, speakerConfSessionRepository, speakerWorkshopRepository)
                 )
                 .build()
                 .makeExecutableSchema();

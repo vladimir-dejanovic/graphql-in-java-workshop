@@ -1,12 +1,17 @@
-type Speaker {
+interface Person {
+    id: ID!
+    name: String!
+}
+
+type Speaker implements Person {
     id: ID!
     name: String!
     twitter: String
     shortBio: String
-    giveTalks: [ConfSession]
+    giveTalks: [Talk]
 }
 
-type Attendee {
+type Attendee implements Person {
     id: ID!
     name: String!
 }
@@ -24,6 +29,7 @@ type Workshop {
     requirements: String
 }
 
+union Talk = ConfSession | Workshop
 
 schema {
     query: Query
@@ -34,6 +40,7 @@ type Query {
     allAttendees: [Attendee]
     allWorkshops: [Workshop]
     allSessions: [ConfSession]
+    allTalks: [Talk]
 }
 
 

@@ -49,10 +49,13 @@ public class GraphqlWorkshopApplication {
 	@Resource
 	SpeakerConfSessionRepository speakerConfSessionRepository;
 
+	@Resource
+	SpeakerWorkshopRepository speakerWorkshopRepository;
+
 
 	@Bean
 	public ServletRegistrationBean graphQLServlet() {
-		GraphQLEntryPoint graphQLEntryPoint = GraphQLEntryPoint.of(speakerRepository,attendeeRepository,confSessionRepository,workshopRepository,speakerConfSessionRepository);
+		GraphQLEntryPoint graphQLEntryPoint = GraphQLEntryPoint.of(speakerRepository,attendeeRepository,confSessionRepository,workshopRepository,speakerConfSessionRepository,speakerWorkshopRepository);
 		
 		return new ServletRegistrationBean(graphQLEntryPoint,"/graphql");
 	}

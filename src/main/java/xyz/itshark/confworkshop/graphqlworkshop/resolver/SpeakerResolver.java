@@ -24,31 +24,45 @@ import java.util.stream.Collectors;
 
 import com.coxautodev.graphql.tools.GraphQLResolver;
 
-import xyz.itshark.confworkshop.graphqlworkshop.pojo.ConfSession;
 import xyz.itshark.confworkshop.graphqlworkshop.pojo.Speaker;
+import xyz.itshark.confworkshop.graphqlworkshop.pojo.SpeakerConfSession;
 import xyz.itshark.confworkshop.graphqlworkshop.repository.ConfSessionRepository;
 import xyz.itshark.confworkshop.graphqlworkshop.repository.SpeakerConfSessionRepository;
+import xyz.itshark.confworkshop.graphqlworkshop.repository.SpeakerWorkshopRepository;
+import xyz.itshark.confworkshop.graphqlworkshop.repository.WorkshopRepository;
 
 public class SpeakerResolver implements GraphQLResolver<Speaker> {
 
     private final ConfSessionRepository confSessionRepository;
+    private final WorkshopRepository workshopRepository;
     private final SpeakerConfSessionRepository speakerConfSessionRepository;
+    private final SpeakerWorkshopRepository speakerWorkshopRepository;
 
-    private  SpeakerResolver(ConfSessionRepository confSessionRepository, SpeakerConfSessionRepository speakerConfSessionRepository) {
+    private  SpeakerResolver(ConfSessionRepository confSessionRepository, WorkshopRepository workshopRepository, SpeakerConfSessionRepository speakerConfSessionRepository, SpeakerWorkshopRepository speakerWorkshopRepository) {
         this.confSessionRepository = confSessionRepository;
+        this.workshopRepository = workshopRepository;
         this.speakerConfSessionRepository = speakerConfSessionRepository;
+        this.speakerWorkshopRepository = speakerWorkshopRepository;
     }
 
-    public static SpeakerResolver of(ConfSessionRepository confSessionRepository, SpeakerConfSessionRepository speakerConfSessionRepository) {
-        return new SpeakerResolver(confSessionRepository,speakerConfSessionRepository);
+    public static SpeakerResolver of(ConfSessionRepository confSessionRepository, WorkshopRepository workshopRepository, SpeakerConfSessionRepository speakerConfSessionRepository, SpeakerWorkshopRepository speakerWorkshopRepository) {
+        return new SpeakerResolver(confSessionRepository,workshopRepository,speakerConfSessionRepository,speakerWorkshopRepository);
     }
 
-    public List<ConfSession>  giveTalks(Speaker speaker) {
-        return speakerConfSessionRepository.findAllBySpeakerId(speaker.getId()).stream()
+    public List<Object>  giveTalks(Speaker speaker) {
+        List<Object> list = speakerConfSessionRepository.findAllBySpeakerId(speaker.getId()).stream()
                 .map(e -> confSessionRepository.findById(e.getConSessionId()))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toList());
+
+        speakerWorkshopRepository.findAllBySpeakerId(speaker.getId()).stream()
+                .map(e -> workshopRepository.findById(e.getWorkshopId()))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .forEachOrdered(list::add);
+
+        return list;
 	}
 
 }
