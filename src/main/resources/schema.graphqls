@@ -1,27 +1,19 @@
-interface Person {
-    id: ID!
-    name: String!
-}
-
-type Speaker implements Person {
+type Speaker {
     id: ID!
     name: String!
     twitter: String
     shortBio: String
-    giveTalks: [Talk]
 }
 
-type Attendee implements Person {
+type Attendee {
     id: ID!
     name: String!
-    listen: [Talk]
 }
 
 type ConfSession {
     id: ID!
     title: String!
     description: String
-    speakers: [Speaker]
 }
 
 type Workshop {
@@ -29,14 +21,11 @@ type Workshop {
     title: String!
     description: String
     requirements: String
-    speakers: [Speaker]
 }
 
-union Talk = ConfSession | Workshop
 
 schema {
     query: Query
-    mutation: Mutation
 }
 
 type Query {
@@ -44,18 +33,6 @@ type Query {
     allAttendees: [Attendee]
     allWorkshops: [Workshop]
     allSessions: [ConfSession]
-    allTalks: [Talk]
 }
 
 
-
-input SpeakerInput {
-   name: String!
-   twitter: String
-   shortBio: String
-}
-
-
-type Mutation {
-    addSpeaker( speaker: SpeakerInput ): Speaker
-}
