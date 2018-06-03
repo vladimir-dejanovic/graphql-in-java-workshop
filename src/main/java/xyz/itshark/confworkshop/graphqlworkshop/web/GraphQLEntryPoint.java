@@ -23,9 +23,19 @@ import com.coxautodev.graphql.tools.SchemaParser;
 import graphql.schema.GraphQLSchema;
 import graphql.servlet.SimpleGraphQLServlet;
 import xyz.itshark.confworkshop.graphqlworkshop.pojo.ConfSession;
-import xyz.itshark.confworkshop.graphqlworkshop.repository.*;
+import xyz.itshark.confworkshop.graphqlworkshop.repository.AttendeeConfSessionRepository;
+import xyz.itshark.confworkshop.graphqlworkshop.repository.AttendeeRepository;
+import xyz.itshark.confworkshop.graphqlworkshop.repository.AttendeeWorkshopRepository;
+import xyz.itshark.confworkshop.graphqlworkshop.repository.ConfSessionRepository;
+import xyz.itshark.confworkshop.graphqlworkshop.repository.SpeakerConfSessionRepository;
+import xyz.itshark.confworkshop.graphqlworkshop.repository.SpeakerRepository;
+import xyz.itshark.confworkshop.graphqlworkshop.repository.SpeakerWorkshopRepository;
+import xyz.itshark.confworkshop.graphqlworkshop.repository.WorkshopRepository;
+import xyz.itshark.confworkshop.graphqlworkshop.resolver.AttendeeResolver;
+import xyz.itshark.confworkshop.graphqlworkshop.resolver.ConfSessionResolver;
 import xyz.itshark.confworkshop.graphqlworkshop.resolver.Query;
 import xyz.itshark.confworkshop.graphqlworkshop.resolver.SpeakerResolver;
+import xyz.itshark.confworkshop.graphqlworkshop.resolver.WorkshopResolver;
 
 public class GraphQLEntryPoint extends SimpleGraphQLServlet {
 	
@@ -34,18 +44,35 @@ public class GraphQLEntryPoint extends SimpleGraphQLServlet {
         super(graphQLSchema);
     }
     
-    public static GraphQLEntryPoint of(SpeakerRepository speakerRepository, AttendeeRepository attendeeRepository, ConfSessionRepository confSessionRepository, WorkshopRepository workshopRepository,SpeakerConfSessionRepository speakerConfSessionRepository, SpeakerWorkshopRepository speakerWorkshopRepository) {
-    	return new GraphQLEntryPoint(buildSchema(speakerRepository,attendeeRepository,confSessionRepository,workshopRepository,speakerConfSessionRepository,speakerWorkshopRepository));
+    public static GraphQLEntryPoint of(SpeakerRepository speakerRepository,
+                                       AttendeeRepository attendeeRepository,
+                                       ConfSessionRepository confSessionRepository,
+                                       WorkshopRepository workshopRepository,
+                                       AttendeeConfSessionRepository attendeeConfSessionRepository,
+                                       AttendeeWorkshopRepository attendeeWorkshopRepository,
+                                       SpeakerConfSessionRepository speakerConfSessionRepository,
+                                       SpeakerWorkshopRepository speakerWorkshopRepository) {
+    	return new GraphQLEntryPoint(buildSchema(speakerRepository, attendeeRepository, confSessionRepository, workshopRepository, attendeeConfSessionRepository,attendeeWorkshopRepository,speakerConfSessionRepository,speakerWorkshopRepository));
     }
 
-    private static GraphQLSchema buildSchema(SpeakerRepository speakerRepository, AttendeeRepository attendeeRepository, ConfSessionRepository confSessionRepository, WorkshopRepository workshopRepository,SpeakerConfSessionRepository speakerConfSessionRepository, SpeakerWorkshopRepository speakerWorkshopRepository) {
+    private static GraphQLSchema buildSchema(SpeakerRepository speakerRepository,
+                                             AttendeeRepository attendeeRepository,
+                                             ConfSessionRepository confSessionRepository,
+                                             WorkshopRepository workshopRepository,
+                                             AttendeeConfSessionRepository attendeeConfSessionRepository,
+                                             AttendeeWorkshopRepository attendeeWorkshopRepository,
+                                             SpeakerConfSessionRepository speakerConfSessionRepository,
+                                             SpeakerWorkshopRepository speakerWorkshopRepository) {
         return SchemaParser
                 .newParser()
                 .file("schema.graphqls")
                 .dictionary(ConfSession.class)
                 .resolvers(
-                        Query.of(speakerRepository,attendeeRepository, confSessionRepository, workshopRepository),
-                        SpeakerResolver.of(confSessionRepository, workshopRepository, speakerConfSessionRepository, speakerWorkshopRepository)
+                        Query.of(speakerRepository, attendeeRepository, confSessionRepository, workshopRepository),
+                        SpeakerResolver.of(confSessionRepository, workshopRepository, speakerConfSessionRepository, speakerWorkshopRepository),
+                        AttendeeResolver.of(confSessionRepository, attendeeConfSessionRepository,attendeeWorkshopRepository,workshopRepository),
+                        ConfSessionResolver.of(speakerRepository, speakerConfSessionRepository),
+                        WorkshopResolver.of(speakerWorkshopRepository,speakerRepository)
                 )
                 .build()
                 .makeExecutableSchema();

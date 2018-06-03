@@ -14,12 +14,14 @@ type Speaker implements Person {
 type Attendee implements Person {
     id: ID!
     name: String!
+    listen: [Talk]
 }
 
 type ConfSession {
     id: ID!
     title: String!
     description: String
+    speakers: [Speaker]
 }
 
 type Workshop {
@@ -27,6 +29,7 @@ type Workshop {
     title: String!
     description: String
     requirements: String
+    speakers: [Speaker]
 }
 
 union Talk = ConfSession | Workshop
@@ -42,5 +45,3 @@ type Query {
     allSessions: [ConfSession]
     allTalks: [Talk]
 }
-
-

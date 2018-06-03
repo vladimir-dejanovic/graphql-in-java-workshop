@@ -24,7 +24,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
-import xyz.itshark.confworkshop.graphqlworkshop.repository.*;
+import xyz.itshark.confworkshop.graphqlworkshop.repository.AttendeeConfSessionRepository;
+import xyz.itshark.confworkshop.graphqlworkshop.repository.AttendeeRepository;
+import xyz.itshark.confworkshop.graphqlworkshop.repository.AttendeeWorkshopRepository;
+import xyz.itshark.confworkshop.graphqlworkshop.repository.ConfSessionRepository;
+import xyz.itshark.confworkshop.graphqlworkshop.repository.SpeakerConfSessionRepository;
+import xyz.itshark.confworkshop.graphqlworkshop.repository.SpeakerRepository;
+import xyz.itshark.confworkshop.graphqlworkshop.repository.SpeakerWorkshopRepository;
+import xyz.itshark.confworkshop.graphqlworkshop.repository.WorkshopRepository;
 import xyz.itshark.confworkshop.graphqlworkshop.web.GraphQLEntryPoint;
 
 @SpringBootApplication
@@ -36,26 +43,38 @@ public class GraphqlWorkshopApplication {
 
 	@Resource
 	SpeakerRepository speakerRepository;
-
+	
 	@Resource
 	AttendeeRepository attendeeRepository;
-
+	
 	@Resource
 	ConfSessionRepository confSessionRepository;
-
+	
 	@Resource
 	WorkshopRepository workshopRepository;
 
 	@Resource
-	SpeakerConfSessionRepository speakerConfSessionRepository;
+	AttendeeConfSessionRepository attendeeConfSessionRepository;
 
 	@Resource
-	SpeakerWorkshopRepository speakerWorkshopRepository;
+	AttendeeWorkshopRepository attendeeWorkshopRepository;
 
+	@Resource
+    SpeakerConfSessionRepository speakerConfSessionRepository;
 
+	@Resource
+    SpeakerWorkshopRepository speakerWorkshopRepository;
+	
 	@Bean
 	public ServletRegistrationBean graphQLServlet() {
-		GraphQLEntryPoint graphQLEntryPoint = GraphQLEntryPoint.of(speakerRepository,attendeeRepository,confSessionRepository,workshopRepository,speakerConfSessionRepository,speakerWorkshopRepository);
+		GraphQLEntryPoint graphQLEntryPoint = GraphQLEntryPoint.of(speakerRepository,
+                attendeeRepository,
+                confSessionRepository,
+                workshopRepository,
+                attendeeConfSessionRepository,
+                attendeeWorkshopRepository,
+                speakerConfSessionRepository,
+                speakerWorkshopRepository);
 		
 		return new ServletRegistrationBean(graphQLEntryPoint,"/graphql");
 	}
