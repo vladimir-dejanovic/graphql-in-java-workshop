@@ -23,6 +23,11 @@ import com.coxautodev.graphql.tools.SchemaParser;
 import graphql.schema.GraphQLSchema;
 import graphql.servlet.SimpleGraphQLServlet;
 import xyz.itshark.confworkshop.graphqlworkshop.pojo.ConfSession;
+import xyz.itshark.confworkshop.graphqlworkshop.repository.AttendeeRepository;
+import xyz.itshark.confworkshop.graphqlworkshop.repository.ConfSessionRepository;
+import xyz.itshark.confworkshop.graphqlworkshop.repository.SpeakerRepository;
+import xyz.itshark.confworkshop.graphqlworkshop.repository.WorkshopRepository;
+import xyz.itshark.confworkshop.graphqlworkshop.resolver.Query;
 
 public class GraphQLEntryPoint extends SimpleGraphQLServlet {
 	
@@ -31,16 +36,18 @@ public class GraphQLEntryPoint extends SimpleGraphQLServlet {
         super(graphQLSchema);
     }
     
-    public static GraphQLEntryPoint of() {
-    	return new GraphQLEntryPoint(buildSchema());
+    public static GraphQLEntryPoint of(SpeakerRepository speakerRepository, AttendeeRepository attendeeRepository, ConfSessionRepository confSessionRepository, WorkshopRepository workshopRepository) {
+    	return new GraphQLEntryPoint(buildSchema(speakerRepository,attendeeRepository,confSessionRepository,workshopRepository));
     }
 
-    private static GraphQLSchema buildSchema() {
+    private static GraphQLSchema buildSchema(SpeakerRepository speakerRepository, AttendeeRepository attendeeRepository, ConfSessionRepository confSessionRepository, WorkshopRepository workshopRepository) {
         return SchemaParser
                 .newParser()
                 .file("schema.graphqls")
                 .dictionary(ConfSession.class)
-                .resolvers()
+                .resolvers(
+                        Query.of(speakerRepository,attendeeRepository, confSessionRepository, workshopRepository)
+                )
                 .build()
                 .makeExecutableSchema();
     }

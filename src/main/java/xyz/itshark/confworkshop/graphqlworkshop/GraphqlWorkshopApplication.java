@@ -24,6 +24,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import xyz.itshark.confworkshop.graphqlworkshop.repository.AttendeeRepository;
+import xyz.itshark.confworkshop.graphqlworkshop.repository.ConfSessionRepository;
+import xyz.itshark.confworkshop.graphqlworkshop.repository.SpeakerRepository;
+import xyz.itshark.confworkshop.graphqlworkshop.repository.WorkshopRepository;
 import xyz.itshark.confworkshop.graphqlworkshop.web.GraphQLEntryPoint;
 
 @SpringBootApplication
@@ -33,10 +37,22 @@ public class GraphqlWorkshopApplication {
 		SpringApplication.run(GraphqlWorkshopApplication.class, args);
 	}
 
+	@Resource
+	SpeakerRepository speakerRepository;
+
+	@Resource
+	AttendeeRepository attendeeRepository;
+
+	@Resource
+	ConfSessionRepository confSessionRepository;
+
+	@Resource
+	WorkshopRepository workshopRepository;
+
 
 	@Bean
 	public ServletRegistrationBean graphQLServlet() {
-		GraphQLEntryPoint graphQLEntryPoint = GraphQLEntryPoint.of();
+		GraphQLEntryPoint graphQLEntryPoint = GraphQLEntryPoint.of(speakerRepository,attendeeRepository,confSessionRepository,workshopRepository);
 		
 		return new ServletRegistrationBean(graphQLEntryPoint,"/graphql");
 	}
