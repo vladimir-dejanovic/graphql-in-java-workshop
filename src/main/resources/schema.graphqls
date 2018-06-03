@@ -1,0 +1,61 @@
+interface Person {
+    id: ID!
+    name: String!
+}
+
+type Speaker implements Person {
+    id: ID!
+    name: String!
+    twitter: String
+    shortBio: String
+    giveTalks: [Talk]
+}
+
+type Attendee implements Person {
+    id: ID!
+    name: String!
+    listen: [Talk]
+}
+
+type ConfSession {
+    id: ID!
+    title: String!
+    description: String
+    speakers: [Speaker]
+}
+
+type Workshop {
+    id: ID!
+    title: String!
+    description: String
+    requirements: String
+    speakers: [Speaker]
+}
+
+union Talk = ConfSession | Workshop
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Query {
+    allSpeakers: [Speaker]
+    allAttendees: [Attendee]
+    allWorkshops: [Workshop]
+    allSessions: [ConfSession]
+    allTalks: [Talk]
+}
+
+
+
+input SpeakerInput {
+   name: String!
+   twitter: String
+   shortBio: String
+}
+
+
+type Mutation {
+    addSpeaker( speaker: SpeakerInput ): Speaker
+}
