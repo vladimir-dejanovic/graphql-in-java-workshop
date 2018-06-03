@@ -74,7 +74,7 @@ public class GraphQLEntryPoint extends SimpleGraphQLServlet {
                         AttendeeResolver.of(confSessionRepository, attendeeConfSessionRepository,attendeeWorkshopRepository,workshopRepository),
                         ConfSessionResolver.of(speakerRepository, speakerConfSessionRepository),
                         WorkshopResolver.of(speakerWorkshopRepository,speakerRepository),
-                        Mutation.of()
+                        Mutation.of(speakerRepository)
                 )
                 .build()
                 .makeExecutableSchema();

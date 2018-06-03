@@ -21,18 +21,23 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 import xyz.itshark.confworkshop.graphqlworkshop.input.SpeakerInput;
 import xyz.itshark.confworkshop.graphqlworkshop.pojo.Speaker;
+import xyz.itshark.confworkshop.graphqlworkshop.repository.SpeakerRepository;
 
 public class Mutation implements GraphQLMutationResolver {
 
-    private Mutation() {
+
+    private final SpeakerRepository speakerRepository;
+
+    private Mutation(SpeakerRepository speakerRepository) {
+        this.speakerRepository = speakerRepository;
 
     }
 
-    public static Mutation of(){
-        return new Mutation();
+    public static Mutation of(SpeakerRepository speakerRepository){
+        return new Mutation(speakerRepository);
     }
 
     public  Speaker addSpeaker(SpeakerInput speaker) {
-        return speaker.toSpeaker();
+        return speakerRepository.save(speaker.toSpeaker());
     }
 }
