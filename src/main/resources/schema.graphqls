@@ -3,6 +3,7 @@ type Speaker {
     name: String!
     twitter: String
     shortBio: String
+    giveTalks: [ConfSession]
 }
 
 type Attendee {
