@@ -1,5 +1,4 @@
-package xyz.itshark.confworkshop.graphqlworkshop.pojo;
-
+package xyz.itshark.confworkshop.graphqlworkshop.input;
 /*
 Code used in my workshop for GraphQL in Java World
 Copyright (C) 2018  Vladimir Dejanović
@@ -18,25 +17,20 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import xyz.itshark.confworkshop.graphqlworkshop.pojo.Speaker;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-@Entity
 @Data
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Speaker extends Person {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class SpeakerInput {
     private String name;
     private String twitter;
     private String shortBio;
+
+    public Speaker toSpeaker() {
+        Speaker speaker = new Speaker();
+        speaker.setName(name);
+        speaker.setTwitter(twitter);
+        speaker.setShortBio(shortBio);
+        return speaker;
+    }
 }

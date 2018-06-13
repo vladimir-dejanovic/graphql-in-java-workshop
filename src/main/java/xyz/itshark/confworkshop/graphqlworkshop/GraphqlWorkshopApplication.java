@@ -32,6 +32,7 @@ import xyz.itshark.confworkshop.graphqlworkshop.repository.SpeakerConfSessionRep
 import xyz.itshark.confworkshop.graphqlworkshop.repository.SpeakerRepository;
 import xyz.itshark.confworkshop.graphqlworkshop.repository.SpeakerWorkshopRepository;
 import xyz.itshark.confworkshop.graphqlworkshop.repository.WorkshopRepository;
+import xyz.itshark.confworkshop.graphqlworkshop.web.GraphQLEntryPoint;
 
 @SpringBootApplication
 public class GraphqlWorkshopApplication {
@@ -64,13 +65,18 @@ public class GraphqlWorkshopApplication {
 	@Resource
     SpeakerWorkshopRepository speakerWorkshopRepository;
 	
-/*
 	@Bean
 	public ServletRegistrationBean graphQLServlet() {
-		GraphQLEntryPoint graphQLEntryPoint = GraphQLEntryPoint.of();
+		GraphQLEntryPoint graphQLEntryPoint = GraphQLEntryPoint.of(speakerRepository,
+                attendeeRepository,
+                confSessionRepository,
+                workshopRepository,
+                attendeeConfSessionRepository,
+                attendeeWorkshopRepository,
+                speakerConfSessionRepository,
+                speakerWorkshopRepository);
 		
 		return new ServletRegistrationBean(graphQLEntryPoint,"/graphql");
 	}
-*/
 
 }
