@@ -40,14 +40,13 @@ schema {
 }
 
 type Query {
+    allPersons: [Person]
     allSpeakers: [Speaker]
     allAttendees: [Attendee]
     allWorkshops: [Workshop]
     allSessions: [ConfSession]
     allTalks: [Talk]
 }
-
-
 
 input SpeakerInput {
    name: String!

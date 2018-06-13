@@ -21,6 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import xyz.itshark.confworkshop.graphqlworkshop.pojo.Attendee;
 import xyz.itshark.confworkshop.graphqlworkshop.pojo.ConfSession;
+import xyz.itshark.confworkshop.graphqlworkshop.pojo.Person;
 import xyz.itshark.confworkshop.graphqlworkshop.pojo.Speaker;
 import xyz.itshark.confworkshop.graphqlworkshop.pojo.Workshop;
 import xyz.itshark.confworkshop.graphqlworkshop.repository.AttendeeRepository;
@@ -47,6 +48,10 @@ public class Query implements GraphQLQueryResolver {
 	
 	public static Query of(SpeakerRepository s, AttendeeRepository a, ConfSessionRepository c, WorkshopRepository w) {
 		return new Query(s,a,c,w);
+	}
+	
+	public List<Person> allPersons() {
+		return (List)speakerRepository.findAll();
 	}
 	
     public List<Speaker> allSpeakers() {

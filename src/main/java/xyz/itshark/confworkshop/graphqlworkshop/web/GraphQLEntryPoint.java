@@ -34,6 +34,7 @@ import xyz.itshark.confworkshop.graphqlworkshop.repository.WorkshopRepository;
 import xyz.itshark.confworkshop.graphqlworkshop.resolver.AttendeeResolver;
 import xyz.itshark.confworkshop.graphqlworkshop.resolver.ConfSessionResolver;
 import xyz.itshark.confworkshop.graphqlworkshop.resolver.Mutation;
+import xyz.itshark.confworkshop.graphqlworkshop.pojo.Person;
 import xyz.itshark.confworkshop.graphqlworkshop.resolver.Query;
 import xyz.itshark.confworkshop.graphqlworkshop.resolver.SpeakerResolver;
 import xyz.itshark.confworkshop.graphqlworkshop.resolver.WorkshopResolver;
