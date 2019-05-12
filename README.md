@@ -19,13 +19,11 @@ This is "simulation" of conference
 Data consists of 
 * Attendee
 * Speaker
-* Conference Session
-* Workshop
+* Talk
 
 Init version of POJO and repositories are already present. 
 There is hook for GraphQL code which need to be implemented. 
 
-for solution and steps in between check branches
 
 
  

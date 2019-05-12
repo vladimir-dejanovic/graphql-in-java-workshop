@@ -1,6 +1,5 @@
 package xyz.itshark.confworkshop.graphqlworkshop.pojo;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -10,12 +9,12 @@ import javax.persistence.Id;
 
 @Entity
 @Data
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Attendee {
+public class SpeakerTalk {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private Long speakerId;
+    private Long talkId;
 }

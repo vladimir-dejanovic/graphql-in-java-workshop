@@ -20,63 +20,52 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import javax.annotation.Resource;
 
+import com.coxautodev.graphql.tools.SchemaParser;
+import graphql.schema.GraphQLSchema;
+import graphql.servlet.SimpleGraphQLHttpServlet;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
-import xyz.itshark.confworkshop.graphqlworkshop.repository.AttendeeConfSessionRepository;
-import xyz.itshark.confworkshop.graphqlworkshop.repository.AttendeeRepository;
-import xyz.itshark.confworkshop.graphqlworkshop.repository.AttendeeWorkshopRepository;
-import xyz.itshark.confworkshop.graphqlworkshop.repository.ConfSessionRepository;
-import xyz.itshark.confworkshop.graphqlworkshop.repository.SpeakerConfSessionRepository;
-import xyz.itshark.confworkshop.graphqlworkshop.repository.SpeakerRepository;
-import xyz.itshark.confworkshop.graphqlworkshop.repository.SpeakerWorkshopRepository;
-import xyz.itshark.confworkshop.graphqlworkshop.repository.WorkshopRepository;
+import xyz.itshark.confworkshop.graphqlworkshop.service.AttendeeService;
+import xyz.itshark.confworkshop.graphqlworkshop.service.SpeakerService;
+import xyz.itshark.confworkshop.graphqlworkshop.service.TalkService;
 import xyz.itshark.confworkshop.graphqlworkshop.web.GraphQLEntryPoint;
 
 @SpringBootApplication
 public class GraphqlWorkshopApplication {
 
+
+	@Resource
+	private SpeakerService speakerService;
+
+	@Resource
+	private TalkService talkService;
+
+	@Resource
+	private AttendeeService attendeeService;
+
+
 	public static void main(String[] args) {
 		SpringApplication.run(GraphqlWorkshopApplication.class, args);
 	}
 
-	@Resource
-	SpeakerRepository speakerRepository;
-	
-	@Resource
-	AttendeeRepository attendeeRepository;
-	
-	@Resource
-	ConfSessionRepository confSessionRepository;
-	
-	@Resource
-	WorkshopRepository workshopRepository;
 
-	@Resource
-	AttendeeConfSessionRepository attendeeConfSessionRepository;
+//	@Bean
+//	public ServletRegistrationBean graphQLServlet() {
+//		return new ServletRegistrationBean(SimpleGraphQLHttpServlet.newBuilder(buildSchema()).build(),"/graphql");
+//	}
+//
+//	private static GraphQLSchema buildSchema() {
+//		return SchemaParser
+//				.newParser()
+//				.file("graphql/schema.graphqls")
+////                .dictionary()
+//				.resolvers()
+//				.build()
+//				.makeExecutableSchema();
+//	}
 
-	@Resource
-	AttendeeWorkshopRepository attendeeWorkshopRepository;
-
-	@Resource
-    SpeakerConfSessionRepository speakerConfSessionRepository;
-
-	@Resource
-    SpeakerWorkshopRepository speakerWorkshopRepository;
-	
-	@Bean
-	public ServletRegistrationBean graphQLServlet() {
-		GraphQLEntryPoint graphQLEntryPoint = GraphQLEntryPoint.of(speakerRepository,
-                attendeeRepository,
-                confSessionRepository,
-                workshopRepository,
-                attendeeConfSessionRepository,
-                attendeeWorkshopRepository,
-                speakerConfSessionRepository,
-                speakerWorkshopRepository);
-		
-		return new ServletRegistrationBean(graphQLEntryPoint,"/graphql");
-	}
 
 }

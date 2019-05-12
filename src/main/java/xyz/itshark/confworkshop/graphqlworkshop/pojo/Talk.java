@@ -11,11 +11,11 @@ import javax.persistence.Id;
 @Entity
 @Data
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Attendee {
-
+public class Talk {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String title;
+    private String description;
 }
