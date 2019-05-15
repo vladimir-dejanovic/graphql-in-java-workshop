@@ -31,7 +31,6 @@ import org.springframework.context.annotation.Bean;
 import xyz.itshark.confworkshop.graphqlworkshop.service.AttendeeService;
 import xyz.itshark.confworkshop.graphqlworkshop.service.SpeakerService;
 import xyz.itshark.confworkshop.graphqlworkshop.service.TalkService;
-import xyz.itshark.confworkshop.graphqlworkshop.web.GraphQLEntryPoint;
 
 @SpringBootApplication
 public class GraphqlWorkshopApplication {
